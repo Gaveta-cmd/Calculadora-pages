@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <link rel="stylesheet" href="calculadora.css">    
+</head>
+<body>
+    <div class="calculadora">
+        <input type="text" id="display" readonly>
+        <div class="botoes">
+            <button class="limpar" onclick="limpar()">C</button>
+            <button onclick="adicionarCaractere('(')">(</button>
+            <button onclick="adicionarCaractere(')')">)</button>
+            <button class="operador" onclick="adicionarCaractere('/')">/</button>
+
+            <button onclick="adicionarCaractere('7')">7</button>
+            <button onclick="adicionarCaractere('8')">8</button>
+            <button onclick="adicionarCaractere('9')">9</button>
+            <button class="operador" onclick="adicionarCaractere('*')">×</button>
+
+            <button onclick="adicionarCaractere('4')">4</button>
+            <button onclick="adicionarCaractere('5')">5</button>
+            <button onclick="adicionarCaractere('6')">6</button>
+            <button class="operador" onclick="adicionarCaractere('-')">-</button>
+
+            <button onclick="adicionarCaractere('1')">1</button>
+            <button onclick="adicionarCaractere('2')">2</button>
+            <button onclick="adicionarCaractere('3')">3</button>
+            <button class="operador" onclick="adicionarCaractere('+')">+</button>
+
+            <button onclick="adicionarCaractere('0')">0</button>
+            <button onclick="adicionarCaractere('.')">.</button>
+            <button onclick="apagar()">←</button>
+            <button class="igual" onclick="calcular()">=</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+        let expressao = '';
+
+        function adicionarCaractere(caractere) {
+            expressao += caractere;
+            display.value = expressao;
+        }
+
+        function limpar() {
+            expressao = '';
+            display.value = '';
+        }
+
+        function apagar() {
+            expressao = expressao.slice(0, -1);
+            display.value = expressao;
+        }
+
+        function calcular() {
+            try {
+                expressao = eval(expressao).toString();
+                display.value = expressao;
+            } catch (error) {
+                display.value = 'Erro';
+                expressao = '';
+            }
+        }
+
+        // Suporte ao teclado
+        document.addEventListener('keydown', (evento) => {
+            if (evento.key >= '0' && evento.key <= '9' || evento.key === '.') {
+                adicionarCaractere(evento.key);
+            } else if (['+', '-', '*', '/'].includes(evento.key)) {
+                adicionarCaractere(evento.key);
+            } else if (evento.key === 'Enter') {
+                calcular();
+            } else if (evento.key === 'Backspace') {
+                apagar();
+            } else if (evento.key === 'Escape') {
+                limpar();
+            } else if (evento.key === '(' || evento.key === ')') {
+                adicionarCaractere(evento.key);
+            }
+        });
+    </script>
+</body>
+</html> 
